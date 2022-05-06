@@ -8,18 +8,18 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
   },
-  mode: "development",
+  mode: 'development',
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Virtual keyboard',
-      template: 'src/index.html'
-    })
+      template: 'src/index.html',
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -31,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
     ],
   },

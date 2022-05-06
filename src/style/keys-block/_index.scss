@@ -1,0 +1,90 @@
+.keys {
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
+  &__line {
+    display: flex;
+    .keys__key {
+      flex: 1;
+      margin: 8px 3px;
+      background-color: #464646;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 45px;
+      cursor: pointer;
+    }
+  }
+}
+
+
+.keys{
+  &__line{
+    .backspace {
+      flex: 1.5;
+    }
+    .tab {
+      flex: 1.5;
+    }
+    .enter {
+      flex: 1.8;
+    }
+    .caps-Lock {
+      flex: 2;
+    }
+    .shift {
+      flex: 1.5;
+    }
+    .command {
+      flex: 1.4;
+    }
+    .space {
+      flex: 4.5;
+    }
+    .double-key {
+      position: relative;
+      .second-key {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 0;
+        left: 5px;
+        line-height: 20px;
+      }
+    }
+    .upDown {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      .up,
+      .down {
+        background-color: #464646;
+        height: 22px;
+        border-radius: 8px;
+        line-height: 25px;
+      }
+      .up {
+        margin-bottom: 2px;
+      }
+    }
+  }
+}
+
+.keys .keys__line .keys__key .caps-Lock .red-color {
+  background-color: red;
+}
+
+.animation {
+  animation: redButton 0.1s alternate;
+}
+
+@keyframes redButton {
+  from { background-color: #464646; }
+  to { background-color: red; }
+}
