@@ -19,7 +19,7 @@ class VirtualKeyboard {
     }
     this.keyboard.setAttribute('class', 'keyboard');
     this.keyboard.innerHTML = `
-      <p>Change of language - key 'fn', or click on 'Control + Space'</p>
+      <p>Change of language - key 'fn'(mouse), or click on 'Control + Space'(keyboard and mouse)</p>
     `;
     this.keyboard.append(textArea.addTextArea(), this.keysKeyboard.addKeys());
   }
@@ -43,12 +43,14 @@ class VirtualKeyboard {
       localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
       this.keysKeyboard.addKeysInKeyboard();
     }
-    document.getElementById(`${event.code}`).parentElement.style.backgroundColor = 'red';
+    document.getElementById(`${event.code}`).style.backgroundColor = 'red';
+    document.getElementById(`${event.code}`).classList.add('animation');
+    setTimeout(() => document.getElementById(`${event.code}`).classList.remove('animation'), 100);
   }
 
   unClickKeyboard(event) {
     this.event = event;
-    document.getElementById(`${this.event.code}`).parentElement.style.backgroundColor = '';
+    document.getElementById(`${this.event.code}`).style.backgroundColor = '';
   }
 
   addStyleRed(key, htmlKey) {
