@@ -19,6 +19,7 @@ class VirtualKeyboard {
     }
     this.keyboard.setAttribute('class', 'keyboard');
     this.keyboard.innerHTML = `
+      <p>Клавиатура создана в операционной системе MacOs</p>
       <p>Change of language - key 'fn'(mouse), or click on 'Control + Space'(keyboard and mouse)</p>
     `;
     this.keyboard.append(textArea.addTextArea(), this.keysKeyboard.addKeys());

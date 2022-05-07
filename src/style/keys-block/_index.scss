@@ -20,6 +20,10 @@
       line-height: 45px;
       cursor: pointer;
       box-shadow: 2px 2px 4px #1c1b1b;
+      transition: box-shadow 0.5s;
+      &:hover {
+        box-shadow: 2px 2px 4px palevioletred;
+      }
       div {
         border-radius: 8px;
       }
