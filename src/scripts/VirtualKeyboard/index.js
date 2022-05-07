@@ -9,13 +9,42 @@ class VirtualKeyboard {
     this.control = false;
     this.option = false;
     this.command = false;
+    this.keysKeyboard = new Keys();
   }
 
   addKeyboard() {
     const textArea = new TextArea();
-    const keys = new Keys();
+    if (localStorage.getItem('language')) {
+      localStorage.setItem('language', 'en');
+    }
     this.keyboard.setAttribute('class', 'keyboard');
-    this.keyboard.append(textArea.addTextArea(), keys.addKeys('ru'));
+    this.keyboard.innerHTML = `
+      <p>Change of language - key 'fn'</p>
+    `;
+    this.keyboard.append(textArea.addTextArea(), this.keysKeyboard.addKeys());
+  }
+
+  clickKeyboard(event) {
+    if (this.caps || this.shift || this.control || this.option || this.command) {
+      this.caps = false;
+      this.e.target.parentElement.parentElement.classList.remove('animation');
+      this.capsLock.style.backgroundColor = '';
+      this.shift = true;
+      this.control = false;
+      this.controlKey.classList.remove('animation');
+      this.controlKey.style.backgroundColor = '';
+      this.option = true;
+      this.command = true;
+      this.addStyleRed('shift', 'shiftKey');
+      this.addStyleRed('option', 'optionKey');
+      this.addStyleRed('command', 'commandKey');
+    }
+    document.getElementById(`${event.code}`).parentElement.style.backgroundColor = 'red';
+  }
+
+  unClickKeyboard(event) {
+    this.event = event;
+    document.getElementById(`${this.event.code}`).parentElement.style.backgroundColor = '';
   }
 
   addStyleRed(key, htmlKey) {
@@ -48,16 +77,12 @@ class VirtualKeyboard {
       } else {
         this.texArea.value += event.target.parentElement.querySelector('.first-key').innerText;
       }
-
     } else if (event.target.innerText === 'Backspace') {
       this.texArea.value = this.texArea.value.slice(0, -1);
-
     } else if (event.target.innerText === 'Tab') {
       this.texArea.value += '\t';
-
     } else if (event.target.innerText === 'Enter') {
       this.texArea.value += '\n';
-
     } else if (event.target.innerText === 'Caps Lock') {
       this.caps = !this.caps;
       if (this.caps) {
@@ -66,10 +91,8 @@ class VirtualKeyboard {
         this.e.target.parentElement.parentElement.classList.remove('animation');
         this.capsLock.style.backgroundColor = '';
       }
-
     } else if (event.target.innerText === 'Shift') {
       this.addStyleRed('shift', 'shiftKey');
-
     } else if (event.target.innerText === 'Control') {
       this.control = !this.control;
       if (this.control) {
@@ -78,22 +101,22 @@ class VirtualKeyboard {
         this.controlKey.classList.remove('animation');
         this.controlKey.style.backgroundColor = '';
       }
-
     } else if (event.target.innerText === 'Option') {
       this.addStyleRed('option', 'optionKey');
-
     } else if (event.target.innerText === 'Command') {
       this.addStyleRed('command', 'commandKey');
-
     } else if (event.target.innerText === 'Space') {
       this.texArea.value += ' ';
-
+    } else if (event.target.innerText === 'fn') {
+      localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
+      this.keysKeyboard.addKeysInKeyboard();
     } else if ((this.shift || this.caps) && !this.e.target.classList.contains('keys') && !this.e.target.classList.contains('keys__line')) {
       this.texArea.value += event.target.innerText;
-
     } else if (!this.e.target.classList.contains('keys') && !this.e.target.classList.contains('keys__line')) {
       this.texArea.value += event.target.innerText.toLowerCase();
     }
+
+    this.texArea.focus();
   }
 }
 

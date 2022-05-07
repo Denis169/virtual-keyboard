@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Denis169/virtual-keyboard#readme",
   "devDependencies": {
+    "@webpack-cli/generators": "^2.4.2",
     "css-loader": "^6.7.1",
     "eslint": "^8.14.0",
     "eslint-config-airbnb-base": "^15.0.0",

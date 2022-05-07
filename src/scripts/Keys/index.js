@@ -3,15 +3,10 @@ import keysLayoutRu from '../DataRu';
 
 class Keys {
   constructor() {
-    this.keysLayoutEn = '';
+    this.keysLayoutEnRu = '';
   }
 
-  addKeys(enRu) {
-    if (enRu === 'en') {
-      this.keysLayoutEn = keysLayoutEn;
-    } else {
-      this.keysLayoutEn = keysLayoutRu;
-    }
+  addKeys() {
     this.keys = document.createElement('div');
     this.keys.setAttribute('class', 'keys');
     this.keys.setAttribute('id', 'keys');
@@ -26,7 +21,32 @@ class Keys {
     this.fiveLine = document.createElement('div');
     this.fiveLine.classList.add('keys__line');
 
-    this.keysLayoutEn.forEach((item, index) => {
+    this.addKeysInKeyboard();
+
+    this.keys.append(
+      this.firstLine,
+      this.secondLine,
+      this.thirdLine,
+      this.fourthLine,
+      this.fiveLine,
+    );
+
+    return this.keys;
+  }
+
+  addKeysInKeyboard() {
+    this.firstLine.innerHTML = '';
+    this.secondLine.innerHTML = '';
+    this.thirdLine.innerHTML = '';
+    this.fourthLine.innerHTML = '';
+    this.fiveLine.innerHTML = '';
+
+    if (localStorage.getItem('language') === 'en') {
+      this.keysLayoutEnRu = keysLayoutEn;
+    } else {
+      this.keysLayoutEnRu = keysLayoutRu;
+    }
+    this.keysLayoutEnRu.forEach((item, index) => {
       item.forEach((elem) => {
         const key = document.createElement('div');
         key.classList.add('keys__key');
@@ -35,10 +55,14 @@ class Keys {
           key.innerHTML = `
             <div class="upDown">
               <div class="up">
-                <div id="${elem[0].code}">${elem[0].key1}</div>
+                <div>
+                  <div id="${elem[0].code}">${elem[0].key1}</div>
+                </div>
               </div>
               <div class="down">
-                <div id="${elem[1].code}">${elem[1].key1}</div>
+                <div>
+                  <div id="${elem[1].code}">${elem[1].key1}</div>
+                </div>
               </div>
             </div>
           `;
@@ -119,16 +143,6 @@ class Keys {
         }
       });
     });
-
-    this.keys.append(
-      this.firstLine,
-      this.secondLine,
-      this.thirdLine,
-      this.fourthLine,
-      this.fiveLine,
-    );
-
-    return this.keys;
   }
 }
 
