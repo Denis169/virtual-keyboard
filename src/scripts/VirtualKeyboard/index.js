@@ -19,7 +19,7 @@ class VirtualKeyboard {
     }
     this.keyboard.setAttribute('class', 'keyboard');
     this.keyboard.innerHTML = `
-      <p>Change of language - key 'fn'</p>
+      <p>Change of language - key 'fn', or click on 'Control + Space'</p>
     `;
     this.keyboard.append(textArea.addTextArea(), this.keysKeyboard.addKeys());
   }
@@ -38,6 +38,10 @@ class VirtualKeyboard {
       this.addStyleRed('shift', 'shiftKey');
       this.addStyleRed('option', 'optionKey');
       this.addStyleRed('command', 'commandKey');
+    }
+    if (event.code === 'Space' && event.ctrlKey) {
+      localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
+      this.keysKeyboard.addKeysInKeyboard();
     }
     document.getElementById(`${event.code}`).parentElement.style.backgroundColor = 'red';
   }
@@ -106,7 +110,12 @@ class VirtualKeyboard {
     } else if (event.target.innerText === 'Command') {
       this.addStyleRed('command', 'commandKey');
     } else if (event.target.innerText === 'Space') {
-      this.texArea.value += ' ';
+      if (this.control) {
+        localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
+        this.keysKeyboard.addKeysInKeyboard();
+      } else {
+        this.texArea.value += ' ';
+      }
     } else if (event.target.innerText === 'fn') {
       localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
       this.keysKeyboard.addKeysInKeyboard();
