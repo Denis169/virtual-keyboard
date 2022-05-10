@@ -1,3 +1,6 @@
+import keysLayoutEn from '../DataEn';
+import keysLayoutRu from '../DataRu';
+
 import TextArea from '../TextArea';
 import Keys from '../Keys';
 
@@ -26,33 +29,111 @@ class VirtualKeyboard {
   }
 
   clickKeyboard(event) {
-    if (this.caps || this.shift || this.control || this.option || this.command) {
-      this.caps = false;
-      this.e.target.parentElement.parentElement.classList.remove('animation');
-      this.capsLock.style.backgroundColor = '';
+    this.texArea = document.getElementById('text-area');
+    this.capsLock = document.querySelector('.caps-Lock');
+    this.shiftKey = document.querySelectorAll('.shift');
+    this.controlKey = document.querySelector('.control');
+    this.optionKey = document.querySelectorAll('.option');
+    this.commandKey = document.querySelectorAll('.command');
+    this.space = document.querySelector('.space');
+    this.dataForSearchSimbol = localStorage.getItem('language') === 'en' ? keysLayoutEn : keysLayoutRu;
+    this.simbol = this.dataForSearchSimbol.reduce((acc, item) => {
+      if (item.find((elem) => elem.code === event.code)) {
+        const letter = item.find((elem) => elem.code === event.code);
+        if (this.caps || this.shift) {
+          acc = letter.key2 ? letter.key2 : letter.key1;
+          return acc;
+        }
+        acc = letter.key1.toLowerCase();
+        return acc;
+      }
+      return acc || null;
+    }, '');
+
+    if (this.simbol === 'backspace') {
+      this.texArea.value = this.texArea.value.slice(0, -1);
+    } else if (this.simbol === 'tab') {
+      this.texArea.value += '\t';
+    } else if (this.simbol === 'enter') {
+      this.texArea.value += '\n';
+    } else if (event.code === 'CapsLock') {
+      this.caps = !this.caps;
+      this.capsLock.style.backgroundColor = 'red';
+    } else if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
       this.shift = true;
-      this.control = false;
-      this.controlKey.classList.remove('animation');
-      this.controlKey.style.backgroundColor = '';
+      this.shiftKey.forEach((item) => item.style.backgroundColor = 'red');
+    } else if (event.code === 'ControlLeft') {
+      this.control = true;
+      this.controlKey.style.backgroundColor = 'red';
+    } else if (event.code === 'AltLeft' || event.code === 'AltRight') {
       this.option = true;
+      this.optionKey.forEach((item) => item.style.backgroundColor = 'red');
+    } else if (event.code === 'MetaLeft' || event.code === 'MetaRight') {
       this.command = true;
-      this.addStyleRed('shift', 'shiftKey');
-      this.addStyleRed('option', 'optionKey');
-      this.addStyleRed('command', 'commandKey');
+      this.commandKey.forEach((item) => item.style.backgroundColor = 'red');
+    } else if (event.code === 'Space') {
+      this.space.classList.add('animation');
+      setTimeout(() => this.space.classList.remove('animation'), 100);
+      if (this.control) {
+        localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
+        this.keysKeyboard.addKeysInKeyboard();
+      } else {
+        this.texArea.value += ' ';
+      }
+    } else if (event.code === 'ArrowLeft') {
+      this.texArea.value += '<';
+    } else if (event.code === 'ArrowUp') {
+      this.texArea.value += '∧';
+    } else if (event.code === 'ArrowDown') {
+      this.texArea.value += '∨';
+    } else if (event.code === 'ArrowRight') {
+      this.texArea.value += '>';
+    } else if (this.simbol !== null) {
+      this.texArea.value += this.simbol;
     }
-    if (event.code === 'Space' && event.ctrlKey) {
-      localStorage.setItem('language', `${localStorage.getItem('language') === 'en' ? 'ru' : 'en'}`);
-      this.keysKeyboard.addKeysInKeyboard();
-    }
-    document.getElementById(`${event.code}`).style.backgroundColor = 'red';
-    document.getElementById(`${event.code}`).classList.add('animation');
+    if (this.simbol !== null) document.getElementById(`${event.code}`).style.backgroundColor = 'red';
+    if (this.simbol !== null) document.getElementById(`${event.code}`).classList.add('animation');
+
     event.preventDefault();
-    setTimeout(() => document.getElementById(`${event.code}`).classList.remove('animation'), 100);
   }
 
   unClickKeyboard(event) {
+    this.dataForSearchSimbol = localStorage.getItem('language') === 'en' ? keysLayoutEn : keysLayoutRu;
+    this.simbol = this.dataForSearchSimbol.reduce((acc, item) => {
+      if (item.find((elem) => elem.code === event.code)) {
+        const letter = item.find((elem) => elem.code === event.code);
+        if (this.caps || this.shift) {
+          acc = letter.key2 ? letter.key2 : letter.key1;
+          return acc;
+        }
+        acc = letter.key1.toLowerCase();
+        return acc;
+      }
+      return acc || null;
+    }, '');
     this.event = event;
-    document.getElementById(`${this.event.code}`).style.backgroundColor = '';
+    if (event.code === 'CapsLock') {
+      this.caps = !this.caps;
+      this.event.target.parentElement.parentElement.classList.remove('animation');
+      this.capsLock.style.backgroundColor = '';
+    } if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      this.shift = false;
+      this.event.target.parentElement.parentElement.classList.remove('animation');
+      this.shiftKey.forEach((item) => item.style.backgroundColor = '');
+    } if (event.code === 'ControlLeft') {
+      this.control = false;
+      this.controlKey.classList.remove('animation');
+      this.controlKey.style.backgroundColor = '';
+    } if (event.code === 'AltLeft' || event.code === 'AltRight') {
+      this.option = false;
+      this.optionKey.forEach((item) => item.classList.remove('animation'));
+      this.optionKey.forEach((item) => item.style.backgroundColor = '');
+    } if (event.code === 'MetaLeft' || event.code === 'MetaRight') {
+      this.command = false;
+      this.commandKey.forEach((item) => item.classList.remove('animation'));
+      this.commandKey.forEach((item) => item.style.backgroundColor = '');
+    }
+    if (this.simbol !== null) document.getElementById(`${this.event.code}`).style.backgroundColor = '';
   }
 
   addStyleRed(key, htmlKey) {
