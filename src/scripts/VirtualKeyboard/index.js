@@ -14,7 +14,7 @@ class VirtualKeyboard {
 
   addKeyboard() {
     const textArea = new TextArea();
-    if (localStorage.getItem('language')) {
+    if (!localStorage.getItem('language')) {
       localStorage.setItem('language', 'en');
     }
     this.keyboard.setAttribute('class', 'keyboard');
@@ -46,6 +46,7 @@ class VirtualKeyboard {
     }
     document.getElementById(`${event.code}`).style.backgroundColor = 'red';
     document.getElementById(`${event.code}`).classList.add('animation');
+    event.preventDefault();
     setTimeout(() => document.getElementById(`${event.code}`).classList.remove('animation'), 100);
   }
 

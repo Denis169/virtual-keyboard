@@ -10,7 +10,6 @@ const texArea = document.getElementById('text-area');
 
 texArea.focus();
 texArea.addEventListener('keydown', (event) => keyboard.clickKeyboard(event));
-texArea.addEventListener('keydown', (event) => console.log(event));
 texArea.addEventListener('keyup', (event) => keyboard.unClickKeyboard(event));
 
 keys.addEventListener('click', (event) => keyboard.addTextInTextArea(event));

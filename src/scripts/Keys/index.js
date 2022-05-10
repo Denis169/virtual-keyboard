@@ -46,6 +46,7 @@ class Keys {
     } else {
       this.keysLayoutEnRu = keysLayoutRu;
     }
+
     this.keysLayoutEnRu.forEach((item, index) => {
       item.forEach((elem) => {
         const key = document.createElement('div');
